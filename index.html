@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>uncoverit — Angel</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          animation: {
+            'snow-fall': 'snowFall 18s linear infinite',
+            'snow-fall-slow': 'snowFall 32s linear infinite',
+            'blink': 'blink 0.8s step-end infinite',
+            'fadeQuotes': 'fadeQuotes 24s infinite',
+          },
+          keyframes: {
+            snowFall: {
+              '0%':   { transform: 'translateY(-120vh) translateX(-30vw)' },
+              '100%': { transform: 'translateY(120vh) translateX(80vw)' },
+            },
+            blink: {
+              '0%, 100%': { opacity: '1' },
+              '50%':      { opacity: '0' },
+            },
+            fadeQuotes: {
+              '0%, 20%':  { opacity: '0' },
+              '25%, 45%': { opacity: '1' },
+              '50%, 70%': { opacity: '0' },
+              '75%, 95%': { opacity: '1' },
+              '100%':     { opacity: '0' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background: #000;
+      color: #f0f0f0;
+      font-family: 'Inter', system-ui, sans-serif;
+      margin: 0;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* برف + باد */
+    .snowflake {
+      position: fixed;
+      top: -10vh;
+      width: 5px; height: 5px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 5px #fff;
+      pointer-events: none;
+      z-index: 9999;
+      animation: snow-fall linear infinite;
+      opacity: 0.7;
+    }
+    .snowflake:nth-child(odd)  { width:4px; height:4px; opacity:0.55; animation-duration:22s; }
+    .snowflake:nth-child(3n)   { width:7px; height:7px; opacity:0.9;  animation-duration:15s; }
+    .snowflake-slow            { width:3px; height:3px; opacity:0.45; animation-duration:35s !important; }
+
+    /* Glassmorphism + 3D tilt */
+    .glass-card {
+      background: rgba(20,20,30,0.28);
+      backdrop-filter: blur(16px) saturate(180%);
+      border: 1px solid rgba(255,255,255,0.11);
+      border-radius: 24px;
+      box-shadow: 0 20px 70px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.07);
+      transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      transform-style: preserve-3d;
+    }
+    .glass-card:hover {
+      transform: perspective(1400px) translateZ(35px) rotateX(5deg) rotateY(7deg) scale(1.025);
+      box-shadow: 0 45px 110px rgba(0,0,0,0.65), inset 0 2px 0 rgba(255,255,255,0.11);
+    }
+
+    /* Parallax ساده روی پروفایل */
+    .profile-wrapper {
+      transform-style: preserve-3d;
+      perspective: 1200px;
+      transition: transform 0.8s ease-out;
+    }
+    .profile-img {
+      transition: transform 0.6s ease;
+      transform-style: preserve-3d;
+    }
+
+    /* Typing */
+    .typing {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 3px solid #fff;
+      animation: blink 0.8s step-end infinite;
+    }
+
+    /* Quotes چرخشی */
+    .quotes span {
+      position: absolute;
+      opacity: 0;
+      transition: opacity 1.2s;
+    }
+    .quotes span.active { opacity: 1; }
+
+    /* Scroll progress */
+    #progress {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(to right, #fff, #aaa);
+      transform-origin: left;
+      transform: scaleX(0);
+      z-index: 10000;
+    }
+  </style>
+</head>
+<body class="flex flex-col items-center justify-center p-6 md:p-12 relative">
+
+  <!-- Scroll Progress -->
+  <div id="progress"></div>
+
+  <!-- برف‌ها -->
+  <div class="snowflake" style="left:5%; animation-duration:14s; animation-delay:-2s;"></div>
+  <div class="snowflake" style="left:12%; animation-duration:19s; animation-delay:-5s;"></div>
+  <div class="snowflake" style="left:18%; animation-duration:16s; animation-delay:-1s;"></div>
+  <div class="snowflake" style="left:25%; animation-duration:21s; animation-delay:-8s;"></div>
+  <div class="snowflake" style="left:33%; animation-duration:17s; animation-delay:-4s;"></div>
+  <div class="snowflake" style="left:38%; animation-duration:23s; animation-delay:-10s;"></div>
+  <div class="snowflake" style="left:45%; animation-duration:15s; animation-delay:-3s;"></div>
+  <div class="snowflake" style="left:52%; animation-duration:20s; animation-delay:-7s;"></div>
+  <div class="snowflake" style="left:60%; animation-duration:18s; animation-delay:-6s;"></div>
+  <div class="snowflake" style="left:67%; animation-duration:22s; animation-delay:-9s;"></div>
+  <div class="snowflake" style="left:74%; animation-duration:13s; animation-delay:-12s;"></div>
+  <div class="snowflake" style="left:82%; animation-duration:19s; animation-delay:-0s;"></div>
+  <div class="snowflake-slow" style="left:9%; animation-delay:-15s;"></div>
+  <div class="snowflake-slow" style="left:20%; animation-delay:-22s;"></div>
+  <div class="snowflake-slow" style="left:35%; animation-delay:-18s;"></div>
+  <div class="snowflake-slow" style="left:48%; animation-delay:-25s;"></div>
+  <div class="snowflake-slow" style="left:57%; animation-delay:-10s;"></div>
+  <div class="snowflake-slow" style="left:70%; animation-delay:-20s;"></div>
+  <div class="snowflake-slow" style="left:85%; animation-delay:-14s;"></div>
+  <div class="snowflake-slow" style="left:92%; animation-delay:-28s;"></div>
+
+  <div class="max-w-3xl w-full space-y-12 text-center z-10 relative">
+
+    <!-- کارت اصلی -->
+    <div class="glass-card p-10 md:p-16">
+      <div class="profile-wrapper mb-10">
+        <img 
+          src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces" 
+          alt="Angel" 
+          class="profile-img w-48 h-48 mx-auto rounded-full object-cover border-4 border-white/10 shadow-2xl"
+        />
+      </div>
+
+      <!-- Greeting + Typing title -->
+      <p id="greeting" class="text-xl md:text-2xl text-white/70 mb-2"></p>
+      <h1 class="text-6xl md:text-8xl font-bold tracking-tight">
+        <span id="typing" class="typing"></span>
+      </h1>
+
+      <p class="text-2xl md:text-3xl text-white/70 mt-6 font-light tracking-wide">
+        uncoverit
+      </p>
+
+      <p class="mt-10 text-xl md:text-2xl text-white/60 leading-relaxed max-w-2xl mx-auto">
+        Editor • Programmer • Security Specialist • Graphics Designer
+      </p>
+    </div>
+
+    <!-- کارت لینک‌ها -->
+    <div class="glass-card p-10 md:p-14">
+      <h2 class="text-4xl md:text-5xl font-semibold mb-12 text-white/90">
+        Connect
+      </h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 text-lg">
+        <a href="https://discord.com/users/.angel.femboy" target="_blank" 
+           class="glass-card p-8 flex flex-col items-center hover:rotate-6 hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all duration-300">
+          <span class="text-5xl mb-4">Discord</span>
+          <span class="font-medium text-white/90">Discord</span>
+          <span class="text-white/50 mt-2">.angel.femboy</span>
+        </a>
+
+        <a href="https://t.me/lightexeyt" target="_blank" 
+           class="glass-card p-8 flex flex-col items-center hover:-rotate-6 hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all duration-300">
+          <span class="text-5xl mb-4">Telegram</span>
+          <span class="font-medium text-white/90">Telegram</span>
+          <span class="text-white/50 mt-2">@lightexeyt</span>
+        </a>
+
+        <a href="https://github.com/RealFoxNight" target="_blank" 
+           class="glass-card p-8 flex flex-col items-center hover:rotate-3 hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all duration-300">
+          <span class="text-5xl mb-4">Github</span>
+          <span class="font-medium text-white/90">GitHub</span>
+          <span class="text-white/50 mt-2">RealFoxNight</span>
+        </a>
+      </div>
+    </div>
+
+    <p class="text-sm text-white/40 mt-20">
+      © uncoverit • <span id="year"></span>
+    </p>
+  </div>
+
+  <script>
+    // Greeting بر اساس ساعت
+    const hour = new Date().getHours();
+    const greetingEl = document.getElementById('greeting');
+    if (hour < 12) greetingEl.textContent = "Good Morning";
+    else if (hour < 18) greetingEl.textContent = "Good afternoon, ";
+    else greetingEl.textContent = "Good evening, ";
+
+    // Typing animation
+    const typingEl = document.getElementById('typing');
+    const text = "Angel";
+    let i = 0;
+    function type() {
+      if (i < text.length) {
+        typingEl.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(type, 120);
+      } else {
+        typingEl.style.borderRight = 'none'; // caret رو بعد از اتمام بردار
+      }
+    }
+    setTimeout(type, 800); // کمی تأخیر برای لود
+
+    // Quotes چرخشی
+    const quotes = document.querySelectorAll('.quotes span');
+    let qIndex = 0;
+    function showQuote() {
+      quotes.forEach(q => q.classList.remove('active'));
+      quotes[qIndex].classList.add('active');
+      qIndex = (qIndex + 1) % quotes.length;
+    }
+    showQuote();
+    setInterval(showQuote, 8000);
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Scroll progress
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('progress').style.transform = `scaleX(${scrolled / 100})`;
+    });
+
+    // Parallax ساده روی پروفایل (با mouse move یا scroll)
+    const profileWrapper = document.querySelector('.profile-wrapper');
+    document.addEventListener('mousemove', e => {
+      const x = (window.innerWidth / 2 - e.clientX) / 50;
+      const y = (window.innerHeight / 2 - e.clientY) / 50;
+      profileWrapper.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+    });
+  </script>
+
+</body>
+</html>
